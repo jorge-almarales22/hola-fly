@@ -13,8 +13,9 @@
   "version": "1.0.0",
   "description": "Prueba Técnica de Holafly",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon --watch ./src index.js"
+    "dev": "nodemon index.js"
   }
 }
