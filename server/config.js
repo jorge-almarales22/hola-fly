@@ -1,5 +1,6 @@
 import express from 'express';
 import "dotenv/config";
+import { hfswapiRouter } from '../routes/hfswapi.route.js';
 
 export default class Server {
 
@@ -7,16 +8,12 @@ export default class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.middlewares();
-        this.paths = {
-            auth: '/api',
-        }
+        this.path = '/hfswapi';
         this.routes();
     }
 
     routes() {
-        this.app.use(this.paths.auth, (req, res) => {
-            res.send('Hello World');
-        })
+        this.app.use(this.path, hfswapiRouter)
     }
 
     middlewares() {
