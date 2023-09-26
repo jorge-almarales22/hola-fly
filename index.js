@@ -1,4 +1,4 @@
-import Server from "./server/config.js";
+import Server from "./src/server/config.js";
 
 const server = new Server();
 
