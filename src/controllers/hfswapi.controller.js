@@ -115,7 +115,7 @@ export const getWeightOnPlanetRandom = async(req, res) => {
     const { name: peopleName, mass } = await getPeopleByID(peopleId);
 
 
-    const weightPeople = getWeightOnPlanet(mass, gravity.split(" ")[0]);
+    const weightPeople = getWeightOnPlanet(mass, gravity);
 
     return res.status(200).json({
         weightPeople: `The weight of ${peopleName} on ${planetName} is ${weightPeople}`
