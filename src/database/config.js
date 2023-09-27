@@ -1,3 +1,4 @@
+// Simulamos una base de datos con esta clase
 export default class Database {
     constructor() {
         this.logs = [];
@@ -18,16 +19,6 @@ export default class Database {
             }
         ];
     }
-
-    addLog(log) {
-        this.logs.push(log);
-        console.log(this.logs);
-    }
-
-    getLogs() {
-        return this.logs;
-    }
-
     getPeoples() {
         return this.peoples;
     }

@@ -1,3 +1,4 @@
+// Modelo People 
 export default class People {
     constructor(name, mass, height, homeworldName = "", homeworldId = ""){
         this.name = name;

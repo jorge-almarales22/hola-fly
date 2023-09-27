@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// esta funcion nos ayuda a obtener el id del planeta pasandole como paraemetro la url del api "homeworld": "https://swapi.dev/api/planets/8/"
 export const getHomeWorldID = (data) => {
 
     const url = new URL(data);
@@ -11,10 +12,12 @@ export const getHomeWorldID = (data) => {
     return desiredPath;
 }
 
+// esta funcion nos ayuda a obtener la masa del planeta pasandole como paraemetro la masa del personaje y la gravedad del planeta
 export const getWeightOnPlanet = (mass, gravity) => {
     return mass * gravity;
 }
 
+// esta funcion nos ayuda a obtener el personaje pasandole como paraemetro el id del personaje en caso de que falle nos devuelve false
 export const getPeopleByID = async(id) => {
     try {
 
@@ -27,6 +30,7 @@ export const getPeopleByID = async(id) => {
     }
 }
 
+// esta funcion nos ayuda a obtener el planeta pasandole como paraemetro el id del planeta en caso de que falle nos devuelve false
 export const getPlanetByID = async(id) => {
     try {
 
@@ -39,6 +43,7 @@ export const getPlanetByID = async(id) => {
     }
 }
 
+// esta funcion nos ayuda a obtener el nombre del planeta pasandole como paraemetro la url del api "homeworld": "https://swapi.dev/api/planets/8/"
 export const getHomeworld = async(homeworld) => {
 
     try {

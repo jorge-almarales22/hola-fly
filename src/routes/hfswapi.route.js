@@ -3,6 +3,7 @@ import { getLogs, getPeople, getPlanet, getWeightOnPlanetRandom } from "../contr
 
 export const hfswapiRouter = Router();
 
+// Estas son las diferentes rutas de nuestra aplicacion
 hfswapiRouter.get("/getPeople/:id", getPeople);
 hfswapiRouter.get("/getPlanet/:id", getPlanet);
 hfswapiRouter.post("/getWeightOnPlanetRandom", getWeightOnPlanetRandom);
