@@ -44,7 +44,7 @@ export const getPeople = async(req, res) => {
         }
 
         return res.status(200).json(person);
-        
+
     } catch (error) {
 
         console.log(error)
@@ -52,4 +52,44 @@ export const getPeople = async(req, res) => {
     }
     
 
+}
+
+export const getPlanet = async(req, res) => {
+
+    try {
+        
+        const { id } = req.params;
+    
+        if(isNaN(Number(id))){
+            return res.status(400).json({
+                message: "ID must be a number"
+            })
+        }
+    
+        const { planets } = database;
+    
+        const planet = planets.find(planet => planet.id == id);
+    
+        if(!planet){
+    
+            const response = await fetch(`https://swapi.dev/api/planets/${id}`);
+            const data = await response.json();
+    
+            const { name, gravity } = data;
+    
+            const newPlanet = {
+                name,
+                gravity
+            }
+    
+            return res.status(200).json(newPlanet);
+        }
+    
+        return res.status(200).json(planet);
+
+    } catch (error) {
+
+        console.log(error)
+        
+    }
 }
