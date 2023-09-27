@@ -1,5 +1,5 @@
 import { database } from "../database/db.js";
-import { getHomeWorldID, getWeightOnPlanet } from "../helpers/functions.js";
+import { getHomeWorldID, getPeopleByID, getPlanetByID, getWeightOnPlanet } from "../helpers/functions.js";
 
 export const getPeople = async(req, res) => {
 
@@ -19,10 +19,7 @@ export const getPeople = async(req, res) => {
     
         if (!person) {
     
-            const response = await fetch(`https://swapi.dev/api/people/${id}`);
-            const data = await response.json();
-    
-            const { name, mass, height, homeworld } = data;
+            const { name, mass, height, homeworld } = await getPeopleByID(id);
     
             const newPerson = {
                 name,
@@ -30,7 +27,7 @@ export const getPeople = async(req, res) => {
                 height
             }
     
-            const responseWorld = await fetch(data.homeworld);
+            const responseWorld = await fetch(homeworld);
             const dataWorld = await responseWorld.json();
     
             const { name: homeworldName } = dataWorld;
@@ -71,11 +68,8 @@ export const getPlanet = async(req, res) => {
         const planet = planets.find(planet => planet.id == id);
     
         if(!planet){
-    
-            const response = await fetch(`https://swapi.dev/api/planets/${id}`);
-            const data = await response.json();
-    
-            const { name, gravity } = data;
+        
+            const { name, gravity } = await getPlanetByID(id);
     
             const newPlanet = {
                 name,
@@ -95,7 +89,7 @@ export const getPlanet = async(req, res) => {
 }
 
 export const getWeightOnPlanetRandom = async(req, res) => {
-    
+
     //TODO: Validar cuando sea 1 el peopleID y el planetaID sea mayor que 1
 
     const { planetId, peopleId } = req.body;
@@ -122,20 +116,15 @@ export const getWeightOnPlanetRandom = async(req, res) => {
         })
     }
 
-    const response = await fetch(`https://swapi.dev/api/planets/${planetId}`);
-    const data = await response.json();
-    const { name: planetName, gravity } = data;
+    const { name: planetName, gravity } = await getPlanetByID(planetId);
 
-    const resp = await fetch(`https://swapi.dev/api/people/${peopleId}`);
-    const dataPeople = await resp.json();
-
-    const { name, mass } = dataPeople;
+    const { name: peopleName, mass } = await getPeopleByID(peopleId);
 
 
     const weightPeople = getWeightOnPlanet(mass, gravity.split(" ")[0]);
 
     return res.status(200).json({
-        weightPeople: `The weight of ${name} on ${planetName} is ${weightPeople}`
+        weightPeople: `The weight of ${peopleName} on ${planetName} is ${weightPeople}`
     })
 
 }
