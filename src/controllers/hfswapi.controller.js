@@ -1,5 +1,5 @@
 import { database } from "../database/db.js";
-import { getHomeWorldID, getPeopleByID, getPlanetByID, getWeightOnPlanet } from "../helpers/functions.js";
+import { getHomeWorldID, getHomeworld, getPeopleByID, getPlanetByID, getWeightOnPlanet } from "../helpers/functions.js";
 import People from "../models/people.model.js";
 import Planet from "../models/planet.model.js";
 
@@ -25,10 +25,7 @@ export const getPeople = async(req, res) => {
     
             const newPerson = new People(name, mass, height);
     
-            const responseWorld = await fetch(homeworld);
-            const dataWorld = await responseWorld.json();
-    
-            const { name: homeworldName } = dataWorld;
+            const { name: homeworldName } = await getHomeworld(homeworld);
     
             newPerson.homeworldName = homeworldName;
     

@@ -24,3 +24,9 @@ export const getPlanetByID = async(id) => {
     const data = await response.json();
     return data;
 }
+
+export const getHomeworld = async(homeworld) => {
+    const responseWorld = await fetch(homeworld);
+    const dataWorld = await responseWorld.json();
+    return dataWorld;
+}
