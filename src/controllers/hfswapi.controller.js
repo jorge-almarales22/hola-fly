@@ -1,4 +1,4 @@
-import { database } from "../database/db.js";
+import Database from "../database/config.js";
 import { getHomeWorldID, getHomeworld, getPeopleByID, getPlanetByID, getWeightOnPlanet } from "../helpers/functions.js";
 import People from "../models/people.model.js";
 import Planet from "../models/planet.model.js";
@@ -15,7 +15,9 @@ export const getPeople = async(req, res) => {
             })
         }
     
-        const { peoples } = database;
+        const database = new Database();
+
+        const peoples = database.getPeoples();
     
         const person = peoples.find(person => person.id == id);
     
@@ -59,7 +61,9 @@ export const getPlanet = async(req, res) => {
             })
         }
     
-        const { planets } = database;
+        const database = new Database();
+
+        const planets = database.getPlanets();
     
         const planet = planets.find(planet => planet.id == id);
     
@@ -93,9 +97,10 @@ export const getWeightOnPlanetRandom = async(req, res) => {
                 message: "ID must be a number"
             })
         }
-    
-        const { peoples } = database;
-        const { planets } = database;
+        
+        const database = new Database();
+        const  peoples  = database.getPeoples();
+        const  planets  = database.getPlanets();
     
         const person = peoples.find(person => person.id == peopleId);
         const planet = planets.find(planet => planet.id == planetId);
@@ -143,4 +148,12 @@ export const getWeightOnPlanetRandom = async(req, res) => {
     }
 
 
+}
+
+export const getLogs = (req, res) => {
+
+    const database = new Database();
+    const logs = database.getLogs();
+    
+    return res.status(200).json({ logs });
 }
