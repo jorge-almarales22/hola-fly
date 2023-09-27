@@ -1,5 +1,5 @@
 import { database } from "../database/db.js";
-import { getHomeWorldID } from "../helpers/getHomeWorldID.js";
+import { getHomeWorldID, getWeightOnPlanet } from "../helpers/functions.js";
 
 export const getPeople = async(req, res) => {
 
@@ -13,9 +13,9 @@ export const getPeople = async(req, res) => {
             })
         }
     
-        const { people } = database;
+        const { peoples } = database;
     
-        const person = people.find(person => person.id == id);
+        const person = peoples.find(person => person.id == id);
     
         if (!person) {
     
@@ -92,4 +92,50 @@ export const getPlanet = async(req, res) => {
         console.log(error)
         
     }
+}
+
+export const getWeightOnPlanetRandom = async(req, res) => {
+    
+    //TODO: Validar cuando sea 1 el peopleID y el planetaID sea mayor que 1
+
+    const { planetId, peopleId } = req.body;
+
+    if(isNaN(Number(planetId)) || isNaN(Number(peopleId))){
+        return res.status(400).json({
+            message: "ID must be a number"
+        })
+    }
+
+    const { peoples } = database;
+    const { planets } = database;
+
+    const person = peoples.find(person => person.id == peopleId);
+    const planet = planets.find(planet => planet.id == planetId);
+
+
+    if(person || planet){
+
+        const weightPeople = getWeightOnPlanet(person.mass, planet.gravity);
+
+        return res.status(200).json({
+            weightPeople: `The weight of ${person.name} on ${planet.name} is ${weightPeople}`
+        })
+    }
+
+    const response = await fetch(`https://swapi.dev/api/planets/${planetId}`);
+    const data = await response.json();
+    const { name: planetName, gravity } = data;
+
+    const resp = await fetch(`https://swapi.dev/api/people/${peopleId}`);
+    const dataPeople = await resp.json();
+
+    const { name, mass } = dataPeople;
+
+
+    const weightPeople = getWeightOnPlanet(mass, gravity.split(" ")[0]);
+
+    return res.status(200).json({
+        weightPeople: `The weight of ${name} on ${planetName} is ${weightPeople}`
+    })
+
 }

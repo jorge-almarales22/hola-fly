@@ -8,3 +8,7 @@ export const getHomeWorldID = (data) => {
 
     return desiredPath;
 }
+
+export const getWeightOnPlanet = (mass, gravity) => {
+    return mass * gravity;
+}

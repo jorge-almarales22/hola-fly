@@ -17,7 +17,7 @@ export default class Server {
     }
 
     middlewares() {
-
+        this.app.use(express.json());
     }
     listen() {
         this.app.listen(this.port, () => {

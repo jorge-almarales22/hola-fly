@@ -1,5 +1,5 @@
 export const database = {
-    people: [
+    peoples: [
         {   id: 1,
             name: "Luke Skywalker",
             height: 172,
