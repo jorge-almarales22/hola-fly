@@ -99,7 +99,12 @@ export const getWeightOnPlanetRandom = async(req, res) => {
     
         const person = peoples.find(person => person.id == peopleId);
         const planet = planets.find(planet => planet.id == planetId);
-    
+
+        if(person.homeworld_name == planet.name){
+            return res.status(400).json({
+                Error: `The character ${person.name} is on his own planet ${planet.name}`
+            })
+        }
     
         if(person && planet){
     
