@@ -10,7 +10,7 @@ export const getHomeWorldID = (data) => {
 }
 
 export const getWeightOnPlanet = (mass, gravity) => {
-    return mass * gravity.split(" ")[0];
+    return mass * gravity;
 }
 
 export const getPeopleByID = async(id) => {

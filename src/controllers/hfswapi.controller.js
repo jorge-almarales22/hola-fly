@@ -84,41 +84,52 @@ export const getPlanet = async(req, res) => {
 
 export const getWeightOnPlanetRandom = async(req, res) => {
 
-    //TODO: Validar cuando sea 1 el peopleID y el planetaID sea mayor que 1
-
-    const { planetId, peopleId } = req.body;
-
-    if(isNaN(Number(planetId)) || isNaN(Number(peopleId))){
-        return res.status(400).json({
-            message: "ID must be a number"
-        })
-    }
-
-    const { peoples } = database;
-    const { planets } = database;
-
-    const person = peoples.find(person => person.id == peopleId);
-    const planet = planets.find(planet => planet.id == planetId);
-
-
-    if(person && planet){
-
-        const weightPeople = getWeightOnPlanet(person.mass, planet.gravity);
-
+    try {
+            
+        const { planetId, peopleId } = req.body;
+    
+        if(isNaN(Number(planetId)) || isNaN(Number(peopleId))){
+            return res.status(400).json({
+                message: "ID must be a number"
+            })
+        }
+    
+        const { peoples } = database;
+        const { planets } = database;
+    
+        const person = peoples.find(person => person.id == peopleId);
+        const planet = planets.find(planet => planet.id == planetId);
+    
+    
+        if(person && planet){
+    
+            const weightPeople = getWeightOnPlanet(person.mass, planet.gravity);
+    
+            return res.status(200).json({
+                weightPeople: `The weight of ${person.name} on ${planet.name} is ${weightPeople}`
+            })
+        }
+    
+        const { name: planetName, gravity } = await getPlanetByID(planetId);
+    
+        const { name: peopleName, mass, homeworld } = await getPeopleByID(peopleId);
+    
+        const { name: homeworldName } = await getHomeworld(homeworld);
+    
+        if(planetName == homeworldName){
+            return res.status(400).json({
+                Error: `The character ${peopleName} is on his own planet ${planetName}`
+            })
+        }
+    
+        const weightPeople = getWeightOnPlanet(mass, gravity.split(" ")[0]);
+    
         return res.status(200).json({
-            weightPeople: `The weight of ${person.name} on ${planet.name} is ${weightPeople}`
+            weightPeople: `The weight of ${peopleName} on ${planetName} is ${weightPeople}`
         })
+    } catch (error) {
+        console.log(error)
     }
 
-    const { name: planetName, gravity } = await getPlanetByID(planetId);
-
-    const { name: peopleName, mass } = await getPeopleByID(peopleId);
-
-
-    const weightPeople = getWeightOnPlanet(mass, gravity);
-
-    return res.status(200).json({
-        weightPeople: `The weight of ${peopleName} on ${planetName} is ${weightPeople}`
-    })
 
 }
