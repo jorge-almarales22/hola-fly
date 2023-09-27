@@ -1,5 +1,7 @@
 import { database } from "../database/db.js";
 import { getHomeWorldID, getPeopleByID, getPlanetByID, getWeightOnPlanet } from "../helpers/functions.js";
+import People from "../models/people.model.js";
+import Planet from "../models/planet.model.js";
 
 export const getPeople = async(req, res) => {
 
@@ -21,11 +23,7 @@ export const getPeople = async(req, res) => {
     
             const { name, mass, height, homeworld } = await getPeopleByID(id);
     
-            const newPerson = {
-                name,
-                mass,
-                height
-            }
+            const newPerson = new People(name, mass, height);
     
             const responseWorld = await fetch(homeworld);
             const dataWorld = await responseWorld.json();
@@ -40,6 +38,7 @@ export const getPeople = async(req, res) => {
     
         }
 
+        delete person.id
         return res.status(200).json(person);
 
     } catch (error) {
@@ -71,14 +70,12 @@ export const getPlanet = async(req, res) => {
         
             const { name, gravity } = await getPlanetByID(id);
     
-            const newPlanet = {
-                name,
-                gravity
-            }
+            const newPlanet = new Planet(name, gravity);
     
             return res.status(200).json(newPlanet);
         }
-    
+        
+        delete planet.id
         return res.status(200).json(planet);
 
     } catch (error) {
@@ -107,7 +104,7 @@ export const getWeightOnPlanetRandom = async(req, res) => {
     const planet = planets.find(planet => planet.id == planetId);
 
 
-    if(person || planet){
+    if(person && planet){
 
         const weightPeople = getWeightOnPlanet(person.mass, planet.gravity);
 
