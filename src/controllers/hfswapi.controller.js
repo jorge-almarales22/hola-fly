@@ -15,7 +15,7 @@ export const getPeople = async(req, res) => {
 
         if(isNaN(Number(id))){
             return res.status(400).json({
-                message: "ID must be a number"
+                Error: "ID must be a number"
             })
         }
     
@@ -27,7 +27,11 @@ export const getPeople = async(req, res) => {
     
         if (!person) {
     
-            const { name, mass, height, homeworld } = await getPeopleByID(id);
+            const people = await getPeopleByID(id);
+
+            if(!people) return res.status(404).json({ Error: "Person not found" });
+            
+            const { name, mass, height, homeworld } = people;
     
             const newPerson = new People(name, mass, height);
     
@@ -63,7 +67,7 @@ export const getPlanet = async(req, res) => {
     
         if(isNaN(Number(id))){
             return res.status(400).json({
-                message: "ID must be a number"
+                Error: "ID must be a number"
             })
         }
     
@@ -75,7 +79,11 @@ export const getPlanet = async(req, res) => {
     
         if(!planet){
         
-            const { name, gravity } = await getPlanetByID(id);
+            const planet = await getPlanetByID(id);
+
+            if(!planet) return res.status(404).json({ Error: "Planet not found" });
+
+            const { name, gravity } = planet;
     
             const newPlanet = new Planet(name, gravity);
     
@@ -102,7 +110,7 @@ export const getWeightOnPlanetRandom = async(req, res) => {
     
         if(isNaN(Number(planetId)) || isNaN(Number(peopleId))){
             return res.status(400).json({
-                message: "ID must be a number"
+                Error: "ID must be a number"
             })
         }
         
@@ -128,9 +136,17 @@ export const getWeightOnPlanetRandom = async(req, res) => {
             })
         }
     
-        const { name: planetName, gravity } = await getPlanetByID(planetId);
+        const planetResponse = await getPlanetByID(planetId);
+
+        if(!planetResponse) return res.status(404).json({ Error: "Planet not found" });
+
+        const { name: planetName, gravity } = planetResponse;
     
-        const { name: peopleName, mass, homeworld } = await getPeopleByID(peopleId);
+        const personResponse = await getPeopleByID(peopleId);
+
+        if(!personResponse) return res.status(404).json({ Error: "Person not found" });
+
+        const { name: peopleName, mass, homeworld } = personResponse;
     
         const { name: homeworldName } = await getHomeworld(homeworld);
     
@@ -151,6 +167,7 @@ export const getWeightOnPlanetRandom = async(req, res) => {
         return res.status(200).json({
             weightPeople: `The weight of ${peopleName} on ${planetName} is ${weightPeople}`
         })
+        
     } catch (error) {
         console.log(error)
     }
