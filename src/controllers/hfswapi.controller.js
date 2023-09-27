@@ -128,7 +128,7 @@ export const getWeightOnPlanetRandom = async(req, res) => {
         //Guardamos los logs
         logs.push({ip: req.ip, action: req.originalUrl, headers: JSON.stringify(req.headers)});
 
-        const { planetId, peopleId } = req.body;
+        const { planetId, peopleId } = req.params;
     
         // Validamos que el id sea un numero
         if(isNaN(Number(planetId)) || isNaN(Number(peopleId))){
@@ -196,7 +196,12 @@ export const getWeightOnPlanetRandom = async(req, res) => {
                 Error: `The weight cannot be calculated because the mass of the character ${peopleName} is not available.`
             })
         }
-        
+
+        if(gravity.split(" ").length < 2){
+            return res.status(400).json({
+                Error: `The weight cannot be calculated because the gravity of the planet ${planetName} is not available.`
+            })
+        }
         // obtenemos el peso del personaje
         const weightPeople = getWeightOnPlanet(mass, gravity.split(" ")[0]);
     
