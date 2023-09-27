@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const getHomeWorldID = (data) => {
 
     const url = new URL(data);
@@ -14,19 +16,19 @@ export const getWeightOnPlanet = (mass, gravity) => {
 }
 
 export const getPeopleByID = async(id) => {
-    const response = await fetch(`https://swapi.dev/api/people/${id}`);
-    const data = await response.json();
+    const response = await axios.get(`https://swapi.dev/api/people/${id}`);
+    const data = await response.data;
     return data;
 }
 
 export const getPlanetByID = async(id) => {
-    const response = await fetch(`https://swapi.dev/api/planets/${id}`);
-    const data = await response.json();
+    const response = await axios.get(`https://swapi.dev/api/planets/${id}`);
+    const data = await response.data;
     return data;
 }
 
 export const getHomeworld = async(homeworld) => {
-    const responseWorld = await fetch(homeworld);
-    const dataWorld = await responseWorld.json();
+    const responseWorld = await axios.get(homeworld);
+    const dataWorld = await responseWorld.data;
     return dataWorld;
 }

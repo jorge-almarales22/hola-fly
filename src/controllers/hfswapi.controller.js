@@ -100,14 +100,14 @@ export const getWeightOnPlanetRandom = async(req, res) => {
         const person = peoples.find(person => person.id == peopleId);
         const planet = planets.find(planet => planet.id == planetId);
 
-        if(person.homeworld_name == planet.name){
-            return res.status(400).json({
-                Error: `The character ${person.name} is on his own planet ${planet.name}`
-            })
-        }
-    
+        
         if(person && planet){
-    
+            
+            if(person.homeworld_name == planet.name){
+                return res.status(400).json({
+                    Error: `The character ${person.name} is on his own planet ${planet.name}`
+                })
+            }
             const weightPeople = getWeightOnPlanet(person.mass, planet.gravity);
     
             return res.status(200).json({
@@ -126,7 +126,13 @@ export const getWeightOnPlanetRandom = async(req, res) => {
                 Error: `The character ${peopleName} is on his own planet ${planetName}`
             })
         }
-    
+
+        if(mass == "unknown"){
+            return res.status(400).json({
+                Error: `The weight cannot be calculated because the mass of the character ${peopleName} is not available.`
+            })
+        }
+        
         const weightPeople = getWeightOnPlanet(mass, gravity.split(" ")[0]);
     
         return res.status(200).json({
