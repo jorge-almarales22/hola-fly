@@ -3,9 +3,13 @@ import { getHomeWorldID, getHomeworld, getPeopleByID, getPlanetByID, getWeightOn
 import People from "../models/people.model.js";
 import Planet from "../models/planet.model.js";
 
+const logs = []
+
 export const getPeople = async(req, res) => {
 
     try {
+
+        logs.push({ip: req.ip, action: req.originalUrl, headers: JSON.stringify(req.headers)});
         
         const { id } = req.params;
 
@@ -53,6 +57,8 @@ export const getPlanet = async(req, res) => {
 
     try {
         
+        logs.push({ip: req.ip, action: req.originalUrl, headers: JSON.stringify(req.headers)});
+
         const { id } = req.params;
     
         if(isNaN(Number(id))){
@@ -89,7 +95,9 @@ export const getPlanet = async(req, res) => {
 export const getWeightOnPlanetRandom = async(req, res) => {
 
     try {
-            
+        
+        logs.push({ip: req.ip, action: req.originalUrl, headers: JSON.stringify(req.headers)});
+
         const { planetId, peopleId } = req.body;
     
         if(isNaN(Number(planetId)) || isNaN(Number(peopleId))){
@@ -151,9 +159,6 @@ export const getWeightOnPlanetRandom = async(req, res) => {
 }
 
 export const getLogs = (req, res) => {
-
-    const database = new Database();
-    const logs = database.getLogs();
     
     return res.status(200).json({ logs });
 }
