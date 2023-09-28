@@ -6,6 +6,14 @@ Acá adjunto las URL de prueba en producción.
 - Prueba de como obtener un planeta (https://hola-fly-production.up.railway.app/hfswapi/getPlanet/1)
 - Prueba de como obtener el peso de un personaje en un planeta random (https://hola-fly-production.up.railway.app/hfswapi/getWeightOnPlanetRandom/2/2)
 - Para obtener los logs (https://hola-fly-production.up.railway.app/hfswapi/getLogs)
+
+## Aclaraciones
+Quiero dejar claro el porqué estructuré la app de esta manera.
+- Agregue el modulo de ES6 de javascript.
+- Cambié el FileSystem de la app, para una más clara y concisa.
+- Utilizar buenas practicas de programación, con nombre de funciones claras y comentarios.
+- Al final quise dar el mismo resultado con un filesystem y código claro.
+Gracias por la prueba fue divertida.
 ## Instrucciones
 
 _Todas las instrucciones parten de la premisa de que el aspirante tiene una versión de node.js instalada en su sistema._
